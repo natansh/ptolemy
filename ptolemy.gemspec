@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "ptolemy"
   gem.require_paths = ["lib"]
   gem.version       = Ptolemy::VERSION
+
+  gem.add_dependency "treetop"
 end
