@@ -1,11 +1,12 @@
 grammar TOML 
 
-  rule configuration
-   (space / newline / string / float / integer / bool)* 
+  rule string
+    '"' string:([^"\\] / "\\" . )* '"' <StringLiteral>
   end
 
-  rule string
-    '"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+  rule date
+    [0-9] 4..4 '-' [0-9] 2..2 '-' [0-9] 2..2 
+    'T' [0-9] 2..2 ':' [0-9] 2..2 ':' [0-9] 2..2 'Z' <DateLiteral>
   end
 
   rule float
@@ -16,16 +17,16 @@ grammar TOML
     ('+' / '-')? [0-9]+ <IntegerLiteral>
   end
 
-  rule bool
-    ('false' / 'true') <BooleanLiteral>
+  rule boolean
+    (true / false)
   end
 
-  rule space
-    [\s]+
+  rule true
+    'true' <BooleanLiteral>
   end
 
-  rule newline
-    [\n]
+  rule false
+    'false' <BooleanLiteral>
   end
 
 end
