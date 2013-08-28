@@ -1,4 +1,5 @@
-# By Emiliano Mancuso (@emancu). Thanks for this!
+# Copyright Emiliano Mancuso (@emancu). Thanks for this!
+# MIT License
 # Test file for TOML
 # Only this one tries to emulate a TOML file written by a user of the kind of parser writers probably hate
 # This part you'll really hate
