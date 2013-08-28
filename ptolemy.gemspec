@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = Ptolemy::VERSION
 
   gem.add_dependency "treetop"
+  gem.add_development_dependency "rspec"
 end
