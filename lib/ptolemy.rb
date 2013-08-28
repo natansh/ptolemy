@@ -1,5 +1,10 @@
 require "ptolemy/version"
+require "ptolemy/parser"
 
 module Ptolemy
-  # Your code goes here...
+
+  def self.parse(data)
+    Parser.parse(data)
+  end
+
 end

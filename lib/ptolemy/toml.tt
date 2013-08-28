@@ -1,0 +1,31 @@
+grammar TOML 
+
+  rule configuration
+   (space / newline / string / float / integer / bool)* 
+  end
+
+  rule string
+    '"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+  end
+
+  rule float
+    ('+' / '-')? [0-9]+ ('.' [0-9]+) <FloatLiteral>
+  end
+
+  rule integer
+    ('+' / '-')? [0-9]+ <IntegerLiteral>
+  end
+
+  rule bool
+    ('false' / 'true') <BooleanLiteral>
+  end
+
+  rule space
+    [\s]+
+  end
+
+  rule newline
+    [\n]
+  end
+
+end
