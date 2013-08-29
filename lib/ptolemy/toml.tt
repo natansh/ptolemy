@@ -1,5 +1,9 @@
 grammar TOML 
 
+  rule value
+    (boolean / date / float / integer / string)
+  end
+
   rule comment
     '#' [^\n]* <Comment>
   end

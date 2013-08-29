@@ -60,4 +60,23 @@ describe TOMLParser do
     end
   end
 
+  describe 'Constructs' do
+    it 'should be able to parse a value' do
+      examples = {
+        '"hello"' => :string, 
+        '-1.0' => :float,
+        '1' => :integer,
+        'true' => :boolean,
+        '1979-05-27T07:32:00Z' => :date
+      }
+      
+      examples.each do |value, type|
+        result = @parser.parse(value, root: :value)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql type
+      end
+    end
+  end
+
 end
