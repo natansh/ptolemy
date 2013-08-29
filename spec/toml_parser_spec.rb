@@ -7,16 +7,14 @@ describe TOMLParser do
     @parser = TOMLParser.new
   end
 
-  describe 'string' do
+  describe 'Literals' do
     it 'should parse a correct string' do
       result = @parser.parse('"This is a string"', root: :string)
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :string
     end
-  end
 
-  describe 'float' do
     it 'should parse a correct float' do
       ['-0.0', '1.4', '123.2', '+1.1', '+123.9' ].each do |float|
         result = @parser.parse(float, root: :float)
@@ -25,9 +23,7 @@ describe TOMLParser do
         result.type.should eql :float
       end
     end
-  end
 
-  describe 'integer' do
     it 'should parse a correct integers' do
       ['-1', '1', '123', '+1', '+123' ].each do |integer|
         result = @parser.parse(integer, root: :integer)
@@ -36,9 +32,7 @@ describe TOMLParser do
         result.type.should eql :integer
       end
     end
-  end
 
-  describe 'boolean' do
     it 'should parse a correct boolean' do
       ['true', 'false' ].each do |boolean|
         result = @parser.parse('true', root: :boolean)
@@ -47,9 +41,7 @@ describe TOMLParser do
         result.type.should eql :boolean
       end
     end
-  end
 
-  describe 'date' do
     it 'should parse a correct date' do
       result = @parser.parse('1979-05-27T07:32:00Z', root: :date)
       result.should_not be_nil
