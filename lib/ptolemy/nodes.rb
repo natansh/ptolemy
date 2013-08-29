@@ -1,5 +1,11 @@
 module TOML
 
+  class Comment < Treetop::Runtime::SyntaxNode
+    def type
+      :comment
+    end
+  end
+
   class IntegerLiteral < Treetop::Runtime::SyntaxNode
     def type
       :integer

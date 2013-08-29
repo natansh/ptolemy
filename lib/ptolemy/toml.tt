@@ -1,5 +1,9 @@
 grammar TOML 
 
+  rule comment
+    '#' [^\n]* <Comment>
+  end
+
   rule string
     '"' string:([^"\\] / "\\" . )* '"' <StringLiteral>
   end

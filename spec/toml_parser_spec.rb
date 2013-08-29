@@ -58,4 +58,14 @@ describe TOMLParser do
     end
   end
 
+  describe 'comment' do
+    it 'should parse a correct comment' do
+      result = @parser.parse('# This is a comment', root: :comment)
+      result.should_not be_nil
+      result.text_value.should eql '# This is a comment'
+      result.should respond_to(:type)
+      result.type.should eql :comment
+    end
+  end
+
 end
