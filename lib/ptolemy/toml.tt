@@ -22,15 +22,7 @@ grammar TOML
   end
 
   rule boolean
-    (true / false)
-  end
-
-  rule true
-    'true' <BooleanLiteral>
-  end
-
-  rule false
-    'false' <BooleanLiteral>
+    ('true' <BooleanLiteral> / 'false' <BooleanLiteral>)
   end
 
 end
