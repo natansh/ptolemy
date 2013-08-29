@@ -1,5 +1,11 @@
 module TOML
 
+  class KeyGroup < Treetop::Runtime::SyntaxNode
+    def type
+      :key_group
+    end
+  end
+
   class KeyValue < Treetop::Runtime::SyntaxNode
     def type
       :key_value

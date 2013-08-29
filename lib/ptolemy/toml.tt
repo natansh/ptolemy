@@ -1,5 +1,9 @@
 grammar TOML 
 
+  rule key_group
+    space? '[' keys:(key ('.' key)*) ']' space? <KeyGroup>
+  end
+
   rule key_value
     space? key space? '=' space? value space? <KeyValue>
   end

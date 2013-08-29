@@ -101,6 +101,13 @@ describe TOMLParser do
         result.type.should eql :key_value
       end
     end
+
+    it 'should be able to parse a correct key group' do
+      result = @parser.parse('       [key.hello.while]     ', root: :key_group)
+      result.should_not be_nil
+      result.should respond_to(:type)
+      result.type.should eql :key_group
+    end
   end
 
 end
