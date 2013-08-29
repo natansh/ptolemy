@@ -1,5 +1,9 @@
 grammar TOML 
 
+  rule key_value
+    space? key space? '=' space? value space? <KeyValue>
+  end
+
   rule key
     [a-zA-Z_] [a-zA-Z0-9_]* <Key>
   end
@@ -33,4 +37,8 @@ grammar TOML
     ('true' <BooleanLiteral> / 'false' <BooleanLiteral>)
   end
 
+  rule space
+    [\s]+
+  end
+  
 end

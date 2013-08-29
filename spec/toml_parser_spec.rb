@@ -84,6 +84,23 @@ describe TOMLParser do
         result.type.should eql type
       end
     end
+
+    it 'should be able to parse a correct key value' do
+      examples = {
+        'string' => '"Hello"',
+        'date' => '1979-05-27T07:32:00Z',
+        'integer' => '114',
+        'float' => '1.0'
+      } 
+      examples.each do |key, value|
+        result = @parser.parse("      #{key} =    #{value}    ", root: :key_value)
+        result.should_not be_nil
+        result.key.text_value.should eql key
+        result.value.text_value.should eql value
+        result.should respond_to(:type)
+        result.type.should eql :key_value
+      end
+    end
   end
 
 end
