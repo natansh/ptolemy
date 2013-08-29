@@ -1,5 +1,9 @@
 grammar TOML 
 
+  rule key
+    [a-zA-Z_] [a-zA-Z0-9_]* <Key>
+  end
+
   rule value
     (boolean / date / float / integer / string)
   end

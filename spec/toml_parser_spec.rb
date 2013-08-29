@@ -61,6 +61,13 @@ describe TOMLParser do
   end
 
   describe 'Constructs' do
+    it 'should be able to parse a key' do
+      result = @parser.parse('hello', root: :key)
+      result.should_not be_nil
+      result.should respond_to(:type)
+      result.type.should eql :key
+    end
+
     it 'should be able to parse a value' do
       examples = {
         '"hello"' => :string, 

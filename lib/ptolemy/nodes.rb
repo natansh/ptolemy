@@ -1,5 +1,11 @@
 module TOML
 
+  class Key < Treetop::Runtime::SyntaxNode
+    def type
+      :key
+    end
+  end
+
   class Comment < Treetop::Runtime::SyntaxNode
     def type
       :comment
