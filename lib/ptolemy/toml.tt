@@ -1,4 +1,4 @@
-grammar TOML 
+grammar TOML
 
   rule key_group
     space? '[' keys:(key ('.' key)*) ']' space? <KeyGroup>
@@ -29,7 +29,7 @@ grammar TOML
   end
 
   rule date
-    [0-9] 4..4 '-' [0-9] 2..2 '-' [0-9] 2..2 
+    [0-9] 4..4 '-' [0-9] 2..2 '-' [0-9] 2..2
     'T' [0-9] 2..2 ':' [0-9] 2..2 ':' [0-9] 2..2 'Z' <DateLiteral>
   end
 
@@ -48,5 +48,5 @@ grammar TOML
   rule space
     [ \t]+
   end
-  
+
 end
