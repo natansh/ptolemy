@@ -46,7 +46,7 @@ grammar TOML
   end
 
   rule space
-    [\s]+
+    [ \t]+
   end
   
 end
