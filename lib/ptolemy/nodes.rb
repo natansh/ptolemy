@@ -24,6 +24,12 @@ module TOML
     end
   end
 
+  class ArrayLiteral < Treetop::Runtime::SyntaxNode
+    def type
+      :array
+    end
+  end
+
   class IntegerLiteral < Treetop::Runtime::SyntaxNode
     def type
       :integer

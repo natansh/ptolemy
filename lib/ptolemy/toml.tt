@@ -13,7 +13,11 @@ grammar TOML
   end
 
   rule value
-    (boolean / date / float / integer / string)
+    (boolean / date / float / integer / string / array)
+  end
+
+  rule separator
+    comment / space / newline
   end
 
   rule newline
@@ -22,6 +26,15 @@ grammar TOML
 
   rule comment
     '#' (!newline .)* <Comment>
+  end
+
+  rule array
+    '[' (separator* string separator* ',')* separator* (separator* string separator*)? ']' <ArrayLiteral> /
+    '[' (separator* date separator* ',')* separator* (separator* date separator*)? ']' <ArrayLiteral> /
+    '[' (separator* float separator* ',')* separator* (separator* float separator*)? ']' <ArrayLiteral> /
+    '[' (separator* integer separator* ',')* separator* (separator* integer separator*)? ']' <ArrayLiteral> /
+    '[' (separator* boolean separator* ',')* separator* (separator* boolean separator*)? ']' <ArrayLiteral> /
+    '[' (separator* array separator* ',')* separator* (separator* array separator*)? ']' <ArrayLiteral>
   end
 
   rule string

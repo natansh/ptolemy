@@ -50,6 +50,55 @@ describe TOMLParser do
     end
   end
 
+  describe 'Array' do
+    it 'should parse a simple array' do
+      array_string = '[1, 2, 3]'
+      result = @parser.parse(array_string, root: :array)
+      result.should_not be_nil
+      result.should respond_to(:type)
+      result.type.should eql :array
+    end
+
+    it 'should parse a complex multi-line array' do
+        array_string = <<AS_END
+[ # Evil, must say 
+1, 
+
+     2        ,
+# Wait, you can put comments anywhere? 
+
+4 ,
+# What the... is this right?
+]
+AS_END
+      array_string.chomp! #Heredoc introduces a newline at the end
+
+      result = @parser.parse(array_string, root: :array)
+      result.should_not be_nil
+      result.should respond_to(:type)
+      result.type.should eql :array
+    end
+
+    it 'should parse a nested array' do
+      array_string = <<AS_END  
+[ 
+  [1, 2, 
+  # Nested comment, yeah!
+  3 ], 
+  ["hello", "world"
+    # Now this is a doozy!
+  ]
+]
+AS_END
+      array_string.chomp! #Heredoc introduces a newline at the end
+
+      result = @parser.parse(array_string, root: :array)
+      result.should_not be_nil
+      result.should respond_to(:type)
+      result.type.should eql :array
+    end
+  end
+
   describe 'comment' do
     it 'should parse a correct comment' do
       result = @parser.parse('# This is a comment', root: :comment)
