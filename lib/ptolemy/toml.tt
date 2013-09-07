@@ -16,8 +16,12 @@ grammar TOML
     (boolean / date / float / integer / string)
   end
 
+  rule newline
+    "\n" / "\r\n"
+  end
+
   rule comment
-    '#' [^\n]* <Comment>
+    '#' (!newline .)* <Comment>
   end
 
   rule string
