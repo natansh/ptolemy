@@ -1,5 +1,9 @@
 grammar TOML
 
+  rule toml
+    (separator* (key_group / key_value))* separator* <Toml>
+  end
+
   rule key_group
     space? '[' keys:(key ('.' key)*) ']' space? <KeyGroup>
   end

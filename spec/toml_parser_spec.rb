@@ -158,4 +158,17 @@ AS_END
     end
   end
 
+  it 'should parse the full TOML example files' do
+    filenames = ['example.toml', 'hard_example.toml']
+    filenames.each do |filename|
+      path = File.expand_path(File.join(File.dirname(__FILE__), filename))
+      File.open(path) do |file|
+        result = @parser.parse(file.read)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql :toml
+      end
+    end
+  end
+
 end
