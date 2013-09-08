@@ -20,7 +20,7 @@ module Ptolemy
         raise Exception, "Parse error at offset: #{@@parser.index}"
       end
 
-      return tree
+      tree.to_value
     end
 
   end

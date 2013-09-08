@@ -12,6 +12,8 @@ describe TOMLParser do
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :string
+      result.should respond_to(:to_value)
+      result.to_value.should eql "This is a string"
     end
 
     it 'should parse a correct float' do
@@ -20,6 +22,8 @@ describe TOMLParser do
         result.should_not be_nil
         result.should respond_to(:type)
         result.type.should eql :float
+        result.should respond_to(:to_value)
+        result.to_value.should eql float.to_f
       end
     end
 
@@ -29,15 +33,19 @@ describe TOMLParser do
         result.should_not be_nil
         result.should respond_to(:type)
         result.type.should eql :integer
+        result.should respond_to(:to_value)
+        result.to_value.should eql integer.to_i
       end
     end
 
     it 'should parse a correct boolean' do
       ['true', 'false' ].each do |boolean|
-        result = @parser.parse('true', root: :boolean)
+        result = @parser.parse(boolean, root: :boolean)
         result.should_not be_nil
         result.should respond_to(:type)
         result.type.should eql :boolean
+        result.should respond_to(:to_value)
+        result.to_value.should eql (boolean == 'true')
       end
     end
 
@@ -46,6 +54,8 @@ describe TOMLParser do
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :date
+      result.should respond_to(:to_value)
+      result.to_value.should eql DateTime.new(1979, 5, 27, 7, 32, 0)
     end
   end
 
@@ -56,6 +66,8 @@ describe TOMLParser do
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :array
+      result.should respond_to(:to_value)
+      result.to_value.should eql [1, 2, 3]
     end
 
     it 'should parse a complex multi-line array' do
@@ -76,6 +88,8 @@ AS_END
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :array
+      result.should respond_to(:to_value)
+      result.to_value.should eql [1, 2, 4]
     end
 
     it 'should parse a nested array' do
@@ -95,6 +109,8 @@ AS_END
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :array
+      result.should respond_to(:to_value)
+      result.to_value.should eql [[1, 2, 3], ["hello", "world"]]
     end
   end
 
@@ -147,6 +163,8 @@ AS_END
         result.value.text_value.should eql value
         result.should respond_to(:type)
         result.type.should eql :key_value
+        result.should respond_to(:to_value)
+        result.to_value[0].should eql key
       end
     end
 
@@ -155,6 +173,8 @@ AS_END
       result.should_not be_nil
       result.should respond_to(:type)
       result.type.should eql :key_group
+      result.should respond_to(:to_value)
+      result.to_value.should eql ['key', 'hello', 'while']
     end
   end
 

@@ -1,11 +1,11 @@
 grammar TOML
 
   rule toml
-    (separator* (key_group / key_value))* separator* <Toml>
+    list:((separator* elem:(key_group / key_value))*) separator* <Toml>
   end
 
   rule key_group
-    space? '[' keys:(key ('.' key)*) ']' space? <KeyGroup>
+    space? '[' keys:(key remaining_keys:('.' key)*) ']' space? <KeyGroup>
   end
 
   rule key_value
@@ -33,12 +33,12 @@ grammar TOML
   end
 
   rule array
-    '[' (separator* string separator* ',')* separator* (separator* string separator*)? ']' <ArrayLiteral> /
-    '[' (separator* date separator* ',')* separator* (separator* date separator*)? ']' <ArrayLiteral> /
-    '[' (separator* float separator* ',')* separator* (separator* float separator*)? ']' <ArrayLiteral> /
-    '[' (separator* integer separator* ',')* separator* (separator* integer separator*)? ']' <ArrayLiteral> /
-    '[' (separator* boolean separator* ',')* separator* (separator* boolean separator*)? ']' <ArrayLiteral> /
-    '[' (separator* array separator* ',')* separator* (separator* array separator*)? ']' <ArrayLiteral>
+    '[' list:(separator* item:string separator* ',')* separator* last:(separator* item:string separator*)? ']' <ArrayLiteral> /
+    '[' list:(separator* item:date separator* ',')* separator* last:(separator* item:date separator*)? ']' <ArrayLiteral> /
+    '[' list:(separator* item:float separator* ',')* separator* last:(separator* item:float separator*)? ']' <ArrayLiteral> /
+    '[' list:(separator* item:integer separator* ',')* separator* last:(separator* item:integer separator*)? ']' <ArrayLiteral> /
+    '[' list:(separator* item:boolean separator* ',')* separator* last:(separator* item:boolean separator*)? ']' <ArrayLiteral> /
+    '[' list:(separator* item:array separator* ',')* separator* last:(separator* item:array separator*)? ']' <ArrayLiteral>
   end
 
   rule string
@@ -46,8 +46,8 @@ grammar TOML
   end
 
   rule date
-    [0-9] 4..4 '-' [0-9] 2..2 '-' [0-9] 2..2
-    'T' [0-9] 2..2 ':' [0-9] 2..2 ':' [0-9] 2..2 'Z' <DateLiteral>
+    year:([0-9] 4..4) '-' month:([0-9] 2..2) '-' day:([0-9] 2..2)
+    'T' hour:([0-9] 2..2) ':' min:([0-9] 2..2) ':' sec:([0-9] 2..2) 'Z' <DateLiteral>
   end
 
   rule float
