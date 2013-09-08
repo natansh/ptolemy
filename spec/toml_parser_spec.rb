@@ -1,6 +1,5 @@
 require_relative 'spec_helper'
 
-
 describe TOMLParser do
 
   before :all do
@@ -61,11 +60,11 @@ describe TOMLParser do
 
     it 'should parse a complex multi-line array' do
         array_string = <<AS_END
-[ # Evil, must say 
-1, 
+[ # Evil, must say
+1,
 
      2        ,
-# Wait, you can put comments anywhere? 
+# Wait, you can put comments anywhere?
 
 4 ,
 # What the... is this right?
@@ -80,11 +79,11 @@ AS_END
     end
 
     it 'should parse a nested array' do
-      array_string = <<AS_END  
-[ 
-  [1, 2, 
+      array_string = <<AS_END
+[
+  [1, 2,
   # Nested comment, yeah!
-  3 ], 
+  3 ],
   ["hello", "world"
     # Now this is a doozy!
   ]
@@ -119,13 +118,13 @@ AS_END
 
     it 'should be able to parse a value' do
       examples = {
-        '"hello"' => :string, 
+        '"hello"' => :string,
         '-1.0' => :float,
         '1' => :integer,
         'true' => :boolean,
         '1979-05-27T07:32:00Z' => :date
       }
-      
+
       examples.each do |value, type|
         result = @parser.parse(value, root: :value)
         result.should_not be_nil
@@ -140,7 +139,7 @@ AS_END
         'date' => '1979-05-27T07:32:00Z',
         'integer' => '114',
         'float' => '1.0'
-      } 
+      }
       examples.each do |key, value|
         result = @parser.parse("      #{key} =    #{value}    ", root: :key_value)
         result.should_not be_nil
