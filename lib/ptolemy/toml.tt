@@ -9,7 +9,7 @@ grammar TOML
   end
 
   rule key
-    [a-zA-Z_] [a-zA-Z0-9_]* <Key>
+    [a-zA-Z_] [a-zA-Z0-9_?#!]* <Key>
   end
 
   rule value
