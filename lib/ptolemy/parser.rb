@@ -16,6 +16,14 @@ module Ptolemy
     @@parser = TOMLParser.new
 
     def self.parse(data)
+      # Data should be a valid UTF-8 encoded string.
+      if data.encoding != Encoding::UTF-8
+        raise Exception, "Input is not UTF-8 encoded"
+      end
+      unless data.valid_encoding?
+        raise Exception, "Input contains invalid UTF-8 byte sequence"
+      end
+
       tree = @@parser.parse(data)
 
       if tree.nil?

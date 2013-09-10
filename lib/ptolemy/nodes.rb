@@ -131,12 +131,31 @@ module TOML
   end
 
   class StringLiteral < Treetop::Runtime::SyntaxNode
+
+    private
+
+    @@unescape = {
+      '\b' => "\b",
+      '\t' => "\t",
+      '\n' => "\n",
+      '\\' => "\\",
+      '\f' => "\f",
+      '\r' => "\r",
+      '\"' => "\"",
+      '\/' => "\/"
+    }
+
+    public
+
     def type
       :string
     end
 
     def to_value
-      string.text_value.encode('UTF-8')
+      elem = string.text_value
+      elem.gsub!(/\\u([\da-fA-F]{4})/) {|m| [$1].pack("H*").unpack("n*").pack("U*")}
+      elem.gsub!(/(\\[btn\\fr"\/])/) {|m| @@unescape[m]}
+      elem
     end
   end
 

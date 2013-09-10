@@ -9,13 +9,42 @@ describe TOMLParser do
   end
 
   describe 'Literals' do
-    it 'should parse a correct string' do
-      result = @parser.parse('"This is a string"', root: :string)
-      result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :string
-      result.should respond_to(:to_value)
-      result.to_value.should eql "This is a string"
+    describe 'String' do
+      it 'should parse a simple string' do
+        result = @parser.parse('"This is a string"', root: :string)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql :string
+        result.should respond_to(:to_value)
+        result.to_value.should eql "This is a string"
+      end
+
+      it 'should parse a string having escaped characters' do
+        result = @parser.parse('"This is an \n\t \bescaped string."', root: :string)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql :string
+        result.should respond_to(:to_value)
+        result.to_value.should eql "This is an \n\t \bescaped string."
+      end
+
+      it 'should parse a string having unicode symbols' do
+        result = @parser.parse('"This is a string containing úƞĩƈōƌě symbols."', root: :string)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql :string
+        result.should respond_to(:to_value)
+        result.to_value.should eql  "This is a string containing úƞĩƈōƌě symbols."
+      end
+
+      it 'should parse a string having escaped unicode characters' do
+        result = @parser.parse('"This is a unicode string containing linefeed as \u000A."', root: :string)
+        result.should_not be_nil
+        result.should respond_to(:type)
+        result.type.should eql :string
+        result.should respond_to(:to_value)
+        result.to_value.should eql  "This is a unicode string containing linefeed as \n."
+      end
     end
 
     it 'should parse a correct float' do
