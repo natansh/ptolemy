@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module TOML
 
   class Toml < Treetop:: Runtime::SyntaxNode
