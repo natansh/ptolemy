@@ -26,37 +26,29 @@ describe TOMLParser do
       it 'should parse a simple string' do
         result = @parser.parse('"This is a string"', root: :string)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :string
-        result.should respond_to(:to_value)
-        result.to_value.should eql "This is a string"
+        result.should have_type(:string)
+        result.should have_value("This is a string")
       end
 
       it 'should parse a string having escaped characters' do
         result = @parser.parse('"This is an \n\t \bescaped string."', root: :string)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :string
-        result.should respond_to(:to_value)
-        result.to_value.should eql "This is an \n\t \bescaped string."
+        result.should have_type(:string)
+        result.should have_value("This is an \n\t \bescaped string.")
       end
 
       it 'should parse a string having unicode symbols' do
         result = @parser.parse('"This is a string containing úƞĩƈōƌě symbols."', root: :string)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :string
-        result.should respond_to(:to_value)
-        result.to_value.should eql  "This is a string containing úƞĩƈōƌě symbols."
+        result.should have_type(:string)
+        result.should have_value( "This is a string containing úƞĩƈōƌě symbols.")
       end
 
       it 'should parse a string having escaped unicode characters' do
         result = @parser.parse('"This is a unicode string containing linefeed as \u000A."', root: :string)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :string
-        result.should respond_to(:to_value)
-        result.to_value.should eql  "This is a unicode string containing linefeed as \n."
+        result.should have_type(:string)
+        result.should have_value( "This is a unicode string containing linefeed as \n.")
       end
     end
 
@@ -64,10 +56,8 @@ describe TOMLParser do
       ['-0.0', '1.4', '123.2', '+1.1', '+123.9' ].each do |float|
         result = @parser.parse(float, root: :float)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :float
-        result.should respond_to(:to_value)
-        result.to_value.should eql float.to_f
+        result.should have_type(:float)
+        result.should have_value(float.to_f)
       end
     end
 
@@ -75,10 +65,8 @@ describe TOMLParser do
       ['-1', '1', '123', '+1', '+123' ].each do |integer|
         result = @parser.parse(integer, root: :integer)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :integer
-        result.should respond_to(:to_value)
-        result.to_value.should eql integer.to_i
+        result.should have_type(:integer)
+        result.should have_value(integer.to_i)
       end
     end
 
@@ -86,20 +74,16 @@ describe TOMLParser do
       ['true', 'false' ].each do |boolean|
         result = @parser.parse(boolean, root: :boolean)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :boolean
-        result.should respond_to(:to_value)
-        result.to_value.should eql (boolean == 'true')
+        result.should have_type(:boolean)
+        result.should have_value((boolean == 'true'))
       end
     end
 
     it 'should parse a correct date' do
       result = @parser.parse('1979-05-27T07:32:00Z', root: :date)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :date
-      result.should respond_to(:to_value)
-      result.to_value.should eql DateTime.new(1979, 5, 27, 7, 32, 0)
+      result.should have_type(:date)
+      result.should have_value(DateTime.new(1979, 5, 27, 7, 32, 0))
     end
   end
 
@@ -108,10 +92,8 @@ describe TOMLParser do
       array_string = '[1, 2, 3]'
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :array
-      result.should respond_to(:to_value)
-      result.to_value.should eql [1, 2, 3]
+      result.should have_type(:array)
+      result.should have_value([1, 2, 3])
     end
 
     it 'should parse a complex multi-line array' do
@@ -130,10 +112,8 @@ AS_END
 
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :array
-      result.should respond_to(:to_value)
-      result.to_value.should eql [1, 2, 4]
+      result.should have_type(:array)
+      result.should have_value([1, 2, 4])
     end
 
     it 'should parse a nested array' do
@@ -151,10 +131,8 @@ AS_END
 
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :array
-      result.should respond_to(:to_value)
-      result.to_value.should eql [[1, 2, 3], ["hello", "world"]]
+      result.should have_type(:array)
+      result.should have_value([[1, 2, 3], ["hello", "world"]])
     end
   end
 
@@ -163,8 +141,7 @@ AS_END
       result = @parser.parse('# This is a comment', root: :comment)
       result.should_not be_nil
       result.text_value.should eql '# This is a comment'
-      result.should respond_to(:type)
-      result.type.should eql :comment
+      result.should have_type(:comment)
     end
   end
 
@@ -172,8 +149,7 @@ AS_END
     it 'should be able to parse a key' do
       result = @parser.parse('hello', root: :key)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :key
+      result.should have_type(:key)
     end
 
     it 'should be able to parse a value' do
@@ -188,8 +164,7 @@ AS_END
       examples.each do |value, type|
         result = @parser.parse(value, root: :value)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql type
+        result.should have_type(type)
       end
     end
 
@@ -205,9 +180,7 @@ AS_END
         result.should_not be_nil
         result.key.text_value.should eql key
         result.value.text_value.should eql value
-        result.should respond_to(:type)
-        result.type.should eql :key_value
-        result.should respond_to(:to_value)
+        result.should have_type(:key_value)
         result.to_value[0].should eql key
       end
     end
@@ -215,10 +188,8 @@ AS_END
     it 'should be able to parse a correct key group' do
       result = @parser.parse('       [key.hello.while]     ', root: :key_group)
       result.should_not be_nil
-      result.should respond_to(:type)
-      result.type.should eql :key_group
-      result.should respond_to(:to_value)
-      result.to_value.should eql ['key', 'hello', 'while']
+      result.should have_type(:key_group)
+      result.should have_value(['key', 'hello', 'while'])
     end
   end
 
@@ -229,8 +200,7 @@ AS_END
       File.open(path) do |file|
         result = @parser.parse(file.read)
         result.should_not be_nil
-        result.should respond_to(:type)
-        result.type.should eql :toml
+        result.should have_type(:toml)
       end
     end
   end
