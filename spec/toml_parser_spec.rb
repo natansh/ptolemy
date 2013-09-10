@@ -2,6 +2,19 @@
 
 require_relative 'spec_helper'
 
+# Few custom matchers to reduce testing code
+RSpec::Matchers.define :have_type do |expected|
+  match do |actual|
+    actual.respond_to?(:type) && actual.type == expected
+  end
+end
+
+RSpec::Matchers.define :have_value do |expected|
+  match do |actual|
+    actual.respond_to?(:to_value) && actual.to_value == expected
+  end
+end
+
 describe TOMLParser do
 
   before :all do
