@@ -5,11 +5,11 @@ grammar TOML
   end
 
   rule key_group
-    space? '[' keys:(key remaining_keys:('.' key)*) ']' space? <KeyGroup>
+    '[' keys:(key remaining_keys:('.' key)*) ']' <KeyGroup>
   end
 
   rule key_value
-    space? key space? '=' space? value space? <KeyValue>
+    key space? '=' space? value <KeyValue>
   end
 
   rule key

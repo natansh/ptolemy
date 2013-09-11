@@ -183,7 +183,7 @@ AS_END
         'float' => '1.0'
       }
       examples.each do |key, value|
-        result = @parser.parse("      #{key} =    #{value}    ", root: :key_value)
+        result = @parser.parse("#{key} =    \t #{value}", root: :key_value)
         result.should_not be_nil
         result.key.text_value.should eql key
         result.value.text_value.should eql value
@@ -194,7 +194,7 @@ AS_END
     end
 
     it 'should parse a correct key group' do
-      result = @parser.parse('       [key.hello.while]     ', root: :key_group)
+      result = @parser.parse('[key.hello.while]', root: :key_group)
       result.should_not be_nil
       result.should have_type(:key_group)
       result.should have_value(['key', 'hello', 'while'])
