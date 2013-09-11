@@ -23,6 +23,13 @@ describe TOMLParser do
 
   describe 'Literals' do
     describe 'String' do
+      it 'should parse an empty string' do
+        result = @parser.parse('""', root: :string)
+        result.should_not be_nil
+        result.should have_type(:string)
+        result.should have_value("")
+      end
+
       it 'should parse a simple string' do
         result = @parser.parse('"This is a string"', root: :string)
         result.should_not be_nil
