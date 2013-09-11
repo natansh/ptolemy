@@ -24,7 +24,7 @@ module TOML
             raise Exception, "Already defined [#{key_group_dot}] before."
           end
 
-          key_group_set.add(key_group_dot)
+          key_group_set.add key_group_dot
 
           key_group.each do |key|
             current[key] = {} if current[key].nil?

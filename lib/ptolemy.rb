@@ -5,8 +5,8 @@ require "ptolemy/parser"
 
 module Ptolemy
 
-  def self.parse(data)
-    Parser.parse(data)
+  def self.parse data
+    Parser.parse data
   end
 
   def self.parse_file filename
