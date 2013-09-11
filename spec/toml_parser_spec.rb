@@ -153,13 +153,13 @@ AS_END
   end
 
   describe 'Constructs' do
-    it 'should be able to parse a key' do
+    it 'should parse a key' do
       result = @parser.parse('hello', root: :key)
       result.should_not be_nil
       result.should have_type(:key)
     end
 
-    it 'should be able to parse a value' do
+    it 'should parse a value' do
       examples = {
         '"hello"' => :string,
         '-1.0' => :float,
@@ -175,7 +175,7 @@ AS_END
       end
     end
 
-    it 'should be able to parse a correct key value' do
+    it 'should parse a correct key value' do
       examples = {
         'string' => '"Hello"',
         'date' => '1979-05-27T07:32:00Z',
@@ -192,7 +192,7 @@ AS_END
       end
     end
 
-    it 'should be able to parse a correct key group' do
+    it 'should parse a correct key group' do
       result = @parser.parse('       [key.hello.while]     ', root: :key_group)
       result.should_not be_nil
       result.should have_type(:key_group)
