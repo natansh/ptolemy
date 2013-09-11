@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'ptolemy/exceptions'
+
 module TOML
 
   class Toml < Treetop:: Runtime::SyntaxNode
@@ -21,7 +23,7 @@ module TOML
           key_group_dot = key_group.join('.')
 
           if key_group_set.include? key_group_dot
-            raise Exception, "Already defined [#{key_group_dot}] before."
+            raise ParseError, "Already defined [#{key_group_dot}] before."
           end
 
           key_group_set.add key_group_dot
@@ -35,7 +37,7 @@ module TOML
           if current[key].nil?
             current[key] = value
           else
-            raise Exception, "Duplicate value for key:#{key}"
+            raise ParseError, "Duplicate value for key:#{key}"
           end
         end
       end
