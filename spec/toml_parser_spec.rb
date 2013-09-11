@@ -188,6 +188,7 @@ AS_END
         result.key.text_value.should eql key
         result.value.text_value.should eql value
         result.should have_type(:key_value)
+        result.should respond_to(:to_value)
         result.to_value[0].should eql key
       end
     end
