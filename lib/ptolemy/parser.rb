@@ -18,7 +18,7 @@ module Ptolemy
 
     def self.parse data
       # Data should be a valid UTF-8 encoded string.
-      if data.encoding != Encoding::UTF-8
+      if data.encoding != Encoding::UTF_8
         raise EncodingError, "Input is not UTF-8 encoded"
       end
       unless data.valid_encoding?
