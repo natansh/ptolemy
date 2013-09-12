@@ -186,17 +186,32 @@ AS_END
       result.should be_a_kind_of(TOML::KeyGroup)
       result.should have_value(['key', 'hello', 'while'])
     end
-  end
 
-  it 'should parse the full TOML example files' do
-    filenames = ['example.toml', 'hard_example.toml']
-    filenames.each do |filename|
-      path = File.expand_path(File.join(File.dirname(__FILE__), filename))
-      File.open(path) do |file|
-        result = @parser.parse(file.read)
-        result.should_not be_nil
-        result.should be_a_kind_of(TOML::Toml)
-      end
+    it 'should parse valid toml' do
+      toml_string = <<TS_END
+description = "This is valid TOML."
+[personal.details]
+name = "John Doe"
+height = 186
+date_of_birth = 1990-04-12T05:30:00Z
+favorites = ["sports", "gaming"]
+TS_END
+      result = @parser.parse(toml_string)
+      result.should_not be_nil
+      result.should be_a_kind_of(TOML::Toml)
+      result.should respond_to(:to_value)
+
+      toml = result.to_value
+      toml['description'].should eql('This is valid TOML.')
+      toml['personal'].should be_a_kind_of(Hash)
+      details = toml['personal']['details']
+      details.should_not be_nil
+      details.should be_a_kind_of(Hash)
+      details['name'].should eql('John Doe')
+      details['height'].should eql(186)
+      details['date_of_birth'].should eql(DateTime.new(1990, 4, 12, 5, 30, 0))
+      details['favorites'].should be_a_kind_of(Array)
+      details['favorites'].should eql(["sports", "gaming"])
     end
   end
 
