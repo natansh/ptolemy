@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-module TOML
+module Ptolemy
 
   class ParseError < StandardError; end
 

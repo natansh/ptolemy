@@ -19,10 +19,10 @@ module Ptolemy
     def self.parse data
       # Data should be a valid UTF-8 encoded string.
       if data.encoding != Encoding::UTF_8
-        raise EncodingError, "Input is not UTF-8 encoded"
+        raise ParseError, "Input is not UTF-8 encoded"
       end
       unless data.valid_encoding?
-        raise EncodingError, "Input contains invalid UTF-8 byte sequence"
+        raise ParseError, "Input contains invalid UTF-8 byte sequence"
       end
 
       tree = @@parser.parse data
