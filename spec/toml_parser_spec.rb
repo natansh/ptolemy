@@ -2,10 +2,10 @@
 
 require_relative 'spec_helper'
 
-describe TOMLParser do
+describe Ptolemy::TOMLParser do
 
   before :all do
-    @parser = TOMLParser.new
+    @parser = Ptolemy::TOMLParser.new
   end
 
   describe 'Literals' do
@@ -13,35 +13,35 @@ describe TOMLParser do
       it 'should parse an empty string' do
         result = @parser.parse('""', root: :string)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::StringLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::StringLiteral)
         result.should have_value("")
       end
 
       it 'should parse a simple string' do
         result = @parser.parse('"This is a string"', root: :string)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::StringLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::StringLiteral)
         result.should have_value("This is a string")
       end
 
       it 'should parse a string having escaped characters' do
         result = @parser.parse('"This is an \n\t \bescaped string."', root: :string)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::StringLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::StringLiteral)
         result.should have_value("This is an \n\t \bescaped string.")
       end
 
       it 'should parse a string having unicode symbols' do
         result = @parser.parse('"This is a string containing úƞĩƈōƌě symbols."', root: :string)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::StringLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::StringLiteral)
         result.should have_value( "This is a string containing úƞĩƈōƌě symbols.")
       end
 
       it 'should parse a string having escaped unicode characters' do
         result = @parser.parse('"This is a unicode string containing linefeed as \u000A."', root: :string)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::StringLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::StringLiteral)
         result.should have_value( "This is a unicode string containing linefeed as \n.")
       end
 
@@ -55,7 +55,7 @@ describe TOMLParser do
       ['-0.0', '1.4', '123.2', '+1.1', '+123.9' ].each do |float|
         result = @parser.parse(float, root: :float)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::FloatLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::FloatLiteral)
         result.should have_value(float.to_f)
       end
     end
@@ -64,7 +64,7 @@ describe TOMLParser do
       ['-1', '1', '123', '+1', '+123' ].each do |integer|
         result = @parser.parse(integer, root: :integer)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::IntegerLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::IntegerLiteral)
         result.should have_value(integer.to_i)
       end
     end
@@ -73,7 +73,7 @@ describe TOMLParser do
       ['true', 'false' ].each do |boolean|
         result = @parser.parse(boolean, root: :boolean)
         result.should_not be_nil
-        result.should be_a_kind_of(TOML::BooleanLiteral)
+        result.should be_a_kind_of(Ptolemy::TOML::BooleanLiteral)
         result.should have_value((boolean == 'true'))
       end
     end
@@ -81,7 +81,7 @@ describe TOMLParser do
     it 'should parse a correct date' do
       result = @parser.parse('1979-05-27T07:32:00Z', root: :date)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::DateLiteral)
+      result.should be_a_kind_of(Ptolemy::TOML::DateLiteral)
       result.should have_value(DateTime.new(1979, 5, 27, 7, 32, 0))
     end
 
@@ -96,7 +96,7 @@ describe TOMLParser do
       array_string = '[1, 2, 3]'
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::ArrayLiteral)
+      result.should be_a_kind_of(Ptolemy::TOML::ArrayLiteral)
       result.should have_value([1, 2, 3])
     end
 
@@ -116,7 +116,7 @@ AS_END
 
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::ArrayLiteral)
+      result.should be_a_kind_of(Ptolemy::TOML::ArrayLiteral)
       result.should have_value([1, 2, 4])
     end
 
@@ -135,7 +135,7 @@ AS_END
 
       result = @parser.parse(array_string, root: :array)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::ArrayLiteral)
+      result.should be_a_kind_of(Ptolemy::TOML::ArrayLiteral)
       result.should have_value([[1, 2, 3], ["hello", "world"]])
     end
   end
@@ -145,7 +145,7 @@ AS_END
       result = @parser.parse('# This is a comment', root: :comment)
       result.should_not be_nil
       result.text_value.should eql '# This is a comment'
-      result.should be_a_kind_of(TOML::Comment)
+      result.should be_a_kind_of(Ptolemy::TOML::Comment)
     end
   end
 
@@ -153,16 +153,16 @@ AS_END
     it 'should parse a key' do
       result = @parser.parse('hello', root: :key)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::Key)
+      result.should be_a_kind_of(Ptolemy::TOML::Key)
     end
 
     it 'should parse a value' do
       examples = {
-        '"hello"' => [TOML::StringLiteral, 'hello'],
-        '-1.0' => [TOML::FloatLiteral, -1.0],
-        '1' => [TOML::IntegerLiteral, 1],
-        'true' => [TOML::BooleanLiteral, true],
-        '1979-05-27T07:32:00Z' => [TOML::DateLiteral, DateTime.new(1979, 5, 27, 7, 32, 0)]
+        '"hello"' => [Ptolemy::TOML::StringLiteral, 'hello'],
+        '-1.0' => [Ptolemy::TOML::FloatLiteral, -1.0],
+        '1' => [Ptolemy::TOML::IntegerLiteral, 1],
+        'true' => [Ptolemy::TOML::BooleanLiteral, true],
+        '1979-05-27T07:32:00Z' => [Ptolemy::TOML::DateLiteral, DateTime.new(1979, 5, 27, 7, 32, 0)]
       }
 
       examples.each do |input, details|
@@ -186,7 +186,7 @@ AS_END
         result.should_not be_nil
         result.key.text_value.should eql key
         result.value.text_value.should eql value
-        result.should be_a_kind_of(TOML::KeyValue)
+        result.should be_a_kind_of(Ptolemy::TOML::KeyValue)
         result.should respond_to(:to_value)
         result.to_value[0].should eql key
       end
@@ -195,7 +195,7 @@ AS_END
     it 'should parse a correct key group' do
       result = @parser.parse('[key.hello.while]', root: :key_group)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::KeyGroup)
+      result.should be_a_kind_of(Ptolemy::TOML::KeyGroup)
       result.should have_value(['key', 'hello', 'while'])
     end
 
@@ -215,7 +215,7 @@ favorites = ["sports", "gaming"]
 TS_END
       result = @parser.parse(toml_string)
       result.should_not be_nil
-      result.should be_a_kind_of(TOML::Toml)
+      result.should be_a_kind_of(Ptolemy::TOML::Toml)
       result.should respond_to(:to_value)
 
       toml = result.to_value

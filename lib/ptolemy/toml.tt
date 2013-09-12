@@ -1,3 +1,5 @@
+module Ptolemy
+
 grammar TOML
 
   rule toml
@@ -65,5 +67,7 @@ grammar TOML
   rule space
     [ \t]+
   end
+
+end
 
 end

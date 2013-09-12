@@ -4,6 +4,7 @@ require 'set'
 
 require 'ptolemy/exceptions'
 
+module Ptolemy
 module TOML
 
   class Toml < Treetop:: Runtime::SyntaxNode
@@ -137,4 +138,5 @@ module TOML
     end
   end
 
+end
 end
