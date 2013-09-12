@@ -7,10 +7,6 @@ require 'ptolemy/exceptions'
 module TOML
 
   class Toml < Treetop:: Runtime::SyntaxNode
-    def type
-      :toml
-    end
-
     def to_value
       result = {}
       # Keep track of location under which all the key value pairs must be
@@ -21,7 +17,7 @@ module TOML
 
       list.elements.map do |item|
         elem = item.elem
-        if elem.type == :key_group
+        if elem.is_a? KeyGroup
           # Reset current to root level. Key value groups always specify
           # nesting from root
           current = result
@@ -51,10 +47,6 @@ module TOML
   end
 
   class KeyGroup < Treetop::Runtime::SyntaxNode
-    def type
-      :key_group
-    end
-
     def to_value
       result = [keys.key.to_value]
       keys.remaining_keys.elements.each do |elem|
@@ -65,37 +57,22 @@ module TOML
   end
 
   class KeyValue < Treetop::Runtime::SyntaxNode
-    def type
-      :key_value
-    end
-
     def to_value
       [key.to_value, value.to_value]
     end
   end
 
   class Key < Treetop::Runtime::SyntaxNode
-    def type
-      :key
-    end
-
     def to_value
       text_value
     end
   end
 
   class Comment < Treetop::Runtime::SyntaxNode
-    def type
-      :comment
-    end
   end
 
   class ArrayLiteral < Treetop::Runtime::SyntaxNode
-    def type
-      :array
-    end
-
-    def to_value
+   def to_value
       result = list.elements.map do|elem|
         elem.item.to_value
       end
@@ -107,30 +84,18 @@ module TOML
   end
 
   class IntegerLiteral < Treetop::Runtime::SyntaxNode
-    def type
-      :integer
-    end
-
-    def to_value
+   def to_value
       text_value.to_i
     end
   end
 
   class FloatLiteral < Treetop::Runtime::SyntaxNode
-    def type
-      :float
-    end
-
     def to_value
       text_value.to_f
     end
   end
 
   class BooleanLiteral < Treetop::Runtime::SyntaxNode
-    def type
-      :boolean
-    end
-
     def to_value
       text_value == 'true'
     end
@@ -153,10 +118,6 @@ module TOML
 
     public
 
-    def type
-      :string
-    end
-
     def to_value
       elem = string.text_value
       # Unescape unicode characters of the form \uXXXX
@@ -170,10 +131,6 @@ module TOML
   end
 
   class DateLiteral < Treetop::Runtime::SyntaxNode
-    def type
-      :date
-    end
-
     def to_value
       args = [year, month, day, hour, min, sec].map(&:text_value).map(&:to_i)
       DateTime.new(*args)
