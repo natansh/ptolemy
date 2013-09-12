@@ -2,12 +2,6 @@
 
 require_relative 'spec_helper'
 
-RSpec::Matchers.define :have_value do |expected|
-  match do |actual|
-    actual.respond_to?(:to_value) && actual.to_value == expected
-  end
-end
-
 describe TOMLParser do
 
   before :all do
