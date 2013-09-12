@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require 'set'
+
 require 'ptolemy/exceptions'
 
 module TOML
@@ -10,30 +12,33 @@ module TOML
     end
 
     def to_value
-      require 'set'
       result = {}
+      # Keep track of location under which all the key value pairs must be
+      # stored. It gets modified when a key group is encountered.
       current = result
+      # Store all key groups detected so that duplicates can be discovered.
       key_group_set = Set.new
+
       list.elements.map do |item|
         elem = item.elem
         if elem.type == :key_group
+          # Reset current to root level. Key value groups always specify
+          # nesting from root
           current = result
           key_group = elem.to_value
-
-          key_group_dot = key_group.join('.')
-
-          if key_group_set.include? key_group_dot
-            raise ParseError, "Already defined [#{key_group_dot}] before."
+          if key_group_set.include? key_group
+            raise ParseError, "Already defined [#{key_group}] before."
           end
-
-          key_group_set.add key_group_dot
-
+          key_group_set.add key_group
+          # If the key group is x.y.z.w, create the whole nested structure
+          # in case it doesn't exist already.
           key_group.each do |key|
             current[key] = {} if current[key].nil?
             current = current[key]
           end
         else
           key, value = elem.to_value
+          # Set value in hash, if it hasn't been set already.
           if current[key].nil?
             current[key] = value
           else
@@ -41,7 +46,6 @@ module TOML
           end
         end
       end
-      p result
       result
     end
   end
@@ -155,7 +159,11 @@ module TOML
 
     def to_value
       elem = string.text_value
+      # Unescape unicode characters of the form \uXXXX
+      # Pack the XXXX string as hexadecimal ---> Unpack to array of integers
+      # ---> Pack back into unicode
       elem.gsub!(/\\u([\da-fA-F]{4})/) {|m| [$1].pack("H*").unpack("n*").pack("U*")}
+      # Unescape known escape characters
       elem.gsub!(/(\\[btn\\fr"\/])/) {|m| @@unescape[m]}
       elem
     end
