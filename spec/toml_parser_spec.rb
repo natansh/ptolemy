@@ -44,6 +44,11 @@ describe TOMLParser do
         result.should be_a_kind_of(TOML::StringLiteral)
         result.should have_value( "This is a unicode string containing linefeed as \n.")
       end
+
+      it 'should not parse a string with single quotes' do
+        result = @parser.parse("'Hello World!'", root: :string)
+        result.should be_nil
+      end
     end
 
     it 'should parse a correct float' do
@@ -78,6 +83,11 @@ describe TOMLParser do
       result.should_not be_nil
       result.should be_a_kind_of(TOML::DateLiteral)
       result.should have_value(DateTime.new(1979, 5, 27, 7, 32, 0))
+    end
+
+    it 'should not parse an incorrect date' do
+      result = @parser.parse('1979-05-27T07:32:00', root: :date)
+      result.should be_nil
     end
   end
 
@@ -187,6 +197,11 @@ AS_END
       result.should_not be_nil
       result.should be_a_kind_of(TOML::KeyGroup)
       result.should have_value(['key', 'hello', 'while'])
+    end
+
+    it 'should not parse a key group having empty key' do
+      result = @parser.parse('[key..while]', root: :key_group)
+      result.should be_nil
     end
 
     it 'should parse valid toml' do
