@@ -148,17 +148,19 @@ AS_END
 
     it 'should parse a value' do
       examples = {
-        '"hello"' => :string,
-        '-1.0' => :float,
-        '1' => :integer,
-        'true' => :boolean,
-        '1979-05-27T07:32:00Z' => :date
+        '"hello"' => [TOML::StringLiteral, 'hello'],
+        '-1.0' => [TOML::FloatLiteral, -1.0],
+        '1' => [TOML::IntegerLiteral, 1],
+        'true' => [TOML::BooleanLiteral, true],
+        '1979-05-27T07:32:00Z' => [TOML::DateLiteral, DateTime.new(1979, 5, 27, 7, 32, 0)]
       }
 
-      examples.each do |value, type|
-        result = @parser.parse(value, root: :value)
+      examples.each do |input, details|
+        klass, value = details
+        result = @parser.parse(input, root: :value)
         result.should_not be_nil
-        #TODO: Check type and value
+        result.should be_a_kind_of(klass)
+        result.should have_value(value)
       end
     end
 
