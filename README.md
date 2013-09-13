@@ -4,23 +4,22 @@
 [![Gem Version](https://badge.fury.io/rb/ptolemy.png)](http://badge.fury.io/rb/ptolemy)
 
 ===
-Ptolemy is a simple TOML parser for Ruby, based on Treetop. It is useful for parsing the [TOML Format](https://github.com/mojombo/toml).
+`Ptolemy` is a simple TOML parser for Ruby, based on Treetop. It is useful for parsing the [TOML Format](https://github.com/mojombo/toml).
 
-Ptolemy currently supports version [0.1.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.1.0.md) of TOML.
+`Ptolemy` currently supports version [0.1.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.1.0.md) of TOML.
 
 Installation
 ---
-
-# Bundler
+### Bundler
 Add this to your `Gemfile`
 
-    gem 'ptolemy', '~> 0.0.2'
+    gem 'ptolemy'
 
 And then run
 
     bundle install
 
-# Manual
+### Manual
 You can install it manually using
 
     gem install ptolemy
@@ -51,7 +50,7 @@ Usage
 
 Test Suite
 ---
-Ptolemy has a fairly exhaustive test suite built on `rspec` and can
+`Ptolemy` has a fairly exhaustive test suite built on `rspec` and can
 successfully parse the specification file and hard example given
 in the TOML specification.
 
